@@ -55,12 +55,20 @@ def send_email(msg: str) -> None:
     port = int(os.getenv("SMTP_PORT", 587))
     user = os.getenv("SMTP_USER", "").strip()
     password = os.getenv("SMTP_PASSWORD", "").strip()
-    sender = os.getenv("EMAIL_FROM", user).strip()
+    
+    sender_email = os.getenv("EMAIL_FROM", user).strip()
+    sender_name = os.getenv("EMAIL_FROM_NAME", "").strip()
     recipient = os.getenv("EMAIL_TO", "").strip()
 
     if not recipient:
         print("[Alert] SMTP_SERVER gesetzt, aber EMAIL_TO fehlt.")
         return
+
+    # E-Mail-Absender zusammenbauen (mit oder ohne Anzeigenamen)
+    if sender_name:
+        sender = f"{sender_name} <{sender_email}>"
+    else:
+        sender = sender_email
 
     em = EmailMessage()
     em.set_content(msg)
