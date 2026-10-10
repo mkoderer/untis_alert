@@ -10,8 +10,12 @@ ARGS="${CHECK_ARGS:---alert -q -n}"
 echo "untis-alert gestartet – Intervall ${INTERVAL}s, Optionen: ${ARGS}"
 
 while true; do
-    echo "[$(date '+%Y-%m-%d %H:%M:%S')] Check läuft"
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] Check läuft..."
     # shellcheck disable=SC2086  # ARGS bewusst in einzelne Optionen aufteilen
-    python check_changes.py $ARGS || echo "[$(date '+%Y-%m-%d %H:%M:%S')] Check fehlgeschlagen (Exit $?)"
+    if python check_changes.py $ARGS; then
+        echo "[$(date '+%Y-%m-%d %H:%M:%S')] Check erfolgreich durchgelaufen."
+    else
+        echo "[$(date '+%Y-%m-%d %H:%M:%S')] Check fehlgeschlagen (Exit $?)"
+    fi
     sleep "$INTERVAL"
 done

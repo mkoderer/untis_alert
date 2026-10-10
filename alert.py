@@ -154,6 +154,14 @@ def send_alert(changes: list[dict]) -> None:
     if not changes:
         return
 
+    print(f"\n[Alert] Sende Benachrichtigung für {len(changes)} neue Änderungen:")
+    for c in changes:
+        d = datetime.strptime(str(c["date"]), "%Y%m%d").strftime("%d.%m.%Y")
+        st = f"{c['start'] // 100:02d}:{c['start'] % 100:02d}"
+        en = f"{c['end'] // 100:02d}:{c['end'] % 100:02d}"
+        print(f"  -> {d} {st}-{en} Uhr | {c['status']}: {c['text']}")
+    print("-" * 50)
+
     msg = format_message(changes)
     
     send_homeassistant(msg)
