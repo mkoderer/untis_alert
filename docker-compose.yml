@@ -1,0 +1,18 @@
+services:
+  untis-alert:
+    build: .
+    container_name: untis-alert
+    restart: unless-stopped
+    init: true                      # sauberes Beenden bei "docker compose down"
+    env_file: .env                  # UNTIS_SERVER, UNTIS_SCHOOL, UNTIS_USER, UNTIS_PASSWORD
+    environment:
+      TZ: Europe/Berlin
+      CHECK_INTERVAL_SECONDS: 3600  # einmal pro Stunde
+      CHECK_ARGS: "--alert -q -n"   # siehe: python check_changes.py --help
+    volumes:
+      - ./data:/app/data            # gespeicherter Stand bleibt bei Neustarts erhalten
+    logging:
+      driver: json-file
+      options:
+        max-size: "1m"
+        max-file: "3"

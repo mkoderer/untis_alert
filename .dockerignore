@@ -1,0 +1,8 @@
+# Nie ins Image: Zugangsdaten, Zustand, lokale Umgebung
+.env
+data/
+.venv/
+.git/
+__pycache__/
+*.pyc
+untis_crawler/
